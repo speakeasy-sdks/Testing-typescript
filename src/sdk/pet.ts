@@ -5,6 +5,7 @@
 import * as utils from "../internal/utils";
 import * as operations from "./models/operations";
 import * as shared from "./models/shared";
+import { SDKConfiguration } from "./sdk";
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
@@ -13,27 +14,10 @@ import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
  * @see {@link http://swagger.io} - Find out more
  */
 export class Pet {
-    _defaultClient: AxiosInstance;
-    _securityClient: AxiosInstance;
-    _serverURL: string;
-    _language: string;
-    _sdkVersion: string;
-    _genVersion: string;
+    private sdkConfiguration: SDKConfiguration;
 
-    constructor(
-        defaultClient: AxiosInstance,
-        securityClient: AxiosInstance,
-        serverURL: string,
-        language: string,
-        sdkVersion: string,
-        genVersion: string
-    ) {
-        this._defaultClient = defaultClient;
-        this._securityClient = securityClient;
-        this._serverURL = serverURL;
-        this._language = language;
-        this._sdkVersion = sdkVersion;
-        this._genVersion = genVersion;
+    constructor(sdkConfig: SDKConfiguration) {
+        this.sdkConfiguration = sdkConfig;
     }
 
     /**
@@ -51,7 +35,10 @@ export class Pet {
             req = new shared.Pet(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -67,7 +54,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.AddPetFormSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -75,7 +65,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -131,7 +121,10 @@ export class Pet {
             req = new shared.Pet(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -147,7 +140,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.AddPetJsonSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -155,7 +151,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -207,7 +203,10 @@ export class Pet {
         security: operations.AddPetRawSecurity,
         config?: AxiosRequestConfig
     ): Promise<operations.AddPetRawResponse> {
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -223,7 +222,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.AddPetRawSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -231,7 +233,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -284,19 +286,25 @@ export class Pet {
             req = new operations.DeletePetRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = utils.generateURL(baseURL, "/pet/{petId}", req);
 
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.DeletePetSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...utils.getHeadersFromRequest(req), ...config?.headers };
         headers["Accept"] = "*/*";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -340,20 +348,26 @@ export class Pet {
             req = new operations.FindPetsByStatusRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet/findByStatus";
 
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.FindPetsByStatusSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...config?.headers };
         const queryParams: string = utils.serializeQueryParams(req);
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -410,20 +424,26 @@ export class Pet {
             req = new operations.FindPetsByTagsRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet/findByTags";
 
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.FindPetsByTagsSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...config?.headers };
         const queryParams: string = utils.serializeQueryParams(req);
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -480,19 +500,25 @@ export class Pet {
             req = new operations.GetPetByIdRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = utils.generateURL(baseURL, "/pet/{petId}", req);
 
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.GetPetByIdSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...config?.headers };
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -544,20 +570,26 @@ export class Pet {
             req = new operations.UpdatePetWithFormRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = utils.generateURL(baseURL, "/pet/{petId}", req);
 
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.UpdatePetWithFormSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...config?.headers };
         const queryParams: string = utils.serializeQueryParams(req);
         headers["Accept"] = "*/*";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -601,7 +633,10 @@ export class Pet {
             req = new shared.Pet(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -617,7 +652,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.UpdatePetFormSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -625,7 +663,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -681,7 +719,10 @@ export class Pet {
             req = new shared.Pet(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -697,7 +738,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.UpdatePetJsonSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -705,7 +749,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -757,7 +801,10 @@ export class Pet {
         security: operations.UpdatePetRawSecurity,
         config?: AxiosRequestConfig
     ): Promise<operations.UpdatePetRawResponse> {
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = baseURL.replace(/\/$/, "") + "/pet";
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -773,7 +820,10 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.UpdatePetRawSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         if (reqBody == null || Object.keys(reqBody).length === 0)
@@ -781,7 +831,7 @@ export class Pet {
         headers["Accept"] = "application/json;q=1, application/xml;q=0";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
@@ -834,7 +884,10 @@ export class Pet {
             req = new operations.UploadFileRequest(req);
         }
 
-        const baseURL: string = this._serverURL;
+        const baseURL: string = utils.templateUrl(
+            this.sdkConfiguration.serverURL,
+            this.sdkConfiguration.serverDefaults
+        );
         const url: string = utils.generateURL(baseURL, "/pet/{petId}/uploadImage", req);
 
         let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
@@ -850,14 +903,17 @@ export class Pet {
         if (!(security instanceof utils.SpeakeasyBase)) {
             security = new operations.UploadFileSecurity(security);
         }
-        const client: AxiosInstance = utils.createSecurityClient(this._defaultClient, security);
+        const client: AxiosInstance = utils.createSecurityClient(
+            this.sdkConfiguration.defaultClient,
+            security
+        );
 
         const headers = { ...reqBodyHeaders, ...config?.headers };
         const queryParams: string = utils.serializeQueryParams(req);
         headers["Accept"] = "application/json";
         headers[
             "user-agent"
-        ] = `speakeasy-sdk/${this._language} ${this._sdkVersion} ${this._genVersion}`;
+        ] = `speakeasy-sdk/${this.sdkConfiguration.language} ${this.sdkConfiguration.sdkVersion} ${this.sdkConfiguration.genVersion}`;
 
         const httpRes: AxiosResponse = await client.request({
             validateStatus: () => true,
