@@ -49,7 +49,7 @@ import { GetInventoryResponse } from "petstore/dist/sdk/models/operations";
 const sdk = new Petstore();
 
 sdk.store.getInventory({
-  apiKey: "YOUR_API_KEY_HERE",
+  apiKey: "",
 }).then((res: GetInventoryResponse) => {
   if (res.statusCode == 200) {
     // handle response
